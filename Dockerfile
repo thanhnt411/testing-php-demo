@@ -10,6 +10,11 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
+    libssl-dev \
+    libpcre2-dev \
+    # Cài đặt PHP Redis Extension (Sử dụng lệnh PECL)
+    && pecl install redis \
+    && docker-php-ext-enable redis \
     # Xóa cache
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 

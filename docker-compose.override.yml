@@ -1,0 +1,12 @@
+services:
+  app:
+    volumes:
+      - .:/var/www:delegated
+
+  mysql:
+    # Ghi đè: Tăng giới hạn bộ nhớ/kết nối cho MySQL trong môi trường dev
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: laravel
+      # Thêm các tùy chỉnh MySQL chỉ dành cho dev
+      MYSQL_MAX_CONNECTIONS: 500
