@@ -42,3 +42,40 @@ test('trả về lỗi nếu thiếu email khi tạo user', function () {
     $response->assertStatus(422)
         ->assertJsonValidationErrors(['email']);
 });
+
+test('có thể lấy thông tin user qua id', function () {
+    $user = User::factory()->create([
+        'name' => 'Thanh',
+        'email' => 'test@gmail.com'
+    ]);
+
+    $response = $this->getJson("/api/users/{$user->id}");
+    $response->assertStatus(200);
+    $this->assertDatabaseHas('users', [
+        'email' => 'test@gmail.com'
+    ]);
+});
+
+test('delete user id', function () {
+    $user = User::factory()->create();
+    $response = $this->deleteJson("/api/users/{$user->id}");
+    $response->assertStatus(204);
+    $this->assertDatabaseMissing('users', ['id' => $user->id]);
+});
+
+test('update user', function () {
+    $user = User::factory()->create([
+        'name' => 'OldName',
+        'email' => 'thanh@gmail.com'
+    ]);
+
+    $response = $this->putJson("/api/users/{$user->id}", [
+        'name' => 'NewName',
+        'email' => $user->email
+    ]);
+    $response->assertStatus(200);
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'name' => 'NewName',
+    ]);
+});
