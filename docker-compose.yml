@@ -7,6 +7,7 @@ services:
     working_dir: /var/www
     volumes:
       - ./:/var/www
+      - /var/www/vendor
     depends_on:
       - mysql
       - redis
@@ -45,7 +46,7 @@ services:
       MYSQL_ROOT_PASSWORD: secret # Mật khẩu root (chỉ dùng trong môi trường dev)
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     volumes:
-      - dbdata:/var/lib/mysql
+      - my_custom_db_data:/var/lib/mysql
     networks:
       - laravel
 
@@ -72,4 +73,5 @@ networks:
     driver: bridge
 
 volumes:
-  dbdata:
+  my_custom_db_data:
+    driver: local
